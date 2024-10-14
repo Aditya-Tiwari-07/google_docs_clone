@@ -1,0 +1,38 @@
+name: Deploy Server and Restart with PM2
+
+on:
+  push:
+    branches:
+      - main  # Trigger the action on pushes to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      with:
+        path: server  # Checkout only the server folder
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3  # Allows SSH connection to the EC2 instance
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Sync Server Folder to EC2
+      run: |
+        scp -r server/ ubuntu@3.84.93.148:/home/ubuntu/server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Restart Node Server with PM2
+      run: |
+        ssh ubuntu@3.84.93.148 "
+        cd /home/ubuntu/server && 
+        npm install &&
+        pm2 stop all || true &&  # Stop all existing PM2 processes (if running)
+        pm2 start npm -- start  # Start the server using 'npm start'
+        pm2 save  # Save the PM2 process list"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
