@@ -19,6 +19,10 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3  # Allows SSH connection to the EC2 instance
       with:
         ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+    
+    - name: Add EC2 Host to Known Hosts
+      run: |
+        ssh-keyscan -H 3.84.93.148 >> ~/.ssh/known_hosts
 
     - name: Sync Server Folder to EC2
       run: |
