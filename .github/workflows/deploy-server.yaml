@@ -33,7 +33,9 @@ jobs:
     - name: Restart Node Server with PM2
       run: |
         ssh ubuntu@3.84.93.148 "
-        export PATH=$PATH:/home/aditya/.nvm/versions/node/v21.7.1/bin/npm:/home/aditya/.nvm/versions/node/v21.7.1/bin/pm2 &&
-        source ~/.bashrc && cd /home/ubuntu/server && npm install && pm2 stop all || true && pm2 start npm -- start && pm2 save"
+        export NVM_DIR=\"$HOME/.nvm\" && 
+        [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && 
+        nvm use 21.7.1 &&
+        cd /home/ubuntu/server && npm install && pm2 stop all || true && pm2 start npm -- start && pm2 save"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
