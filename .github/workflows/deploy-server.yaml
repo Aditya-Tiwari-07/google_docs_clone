@@ -25,8 +25,9 @@ jobs:
         ssh-keyscan -H 3.84.93.148 >> ~/.ssh/known_hosts
 
     - name: Sync Server Folder to EC2
+      working-directory: ./server
       run: |
-        scp -r ./server/ ubuntu@3.84.93.148:/home/ubuntu
+        scp -r ./ ubuntu@3.84.93.148:/home/ubuntu
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
