@@ -32,6 +32,6 @@ jobs:
 
     - name: Restart Node Server with PM2
       run: |
-        ssh ubuntu@3.84.93.148:/home/ubuntu/server "npm install && pm2 stop all || true && pm2 start npm -- start && pm2 save"
+        ssh ubuntu@3.84.93.148 "cd /home/ubuntu/server && npm install && pm2 stop all || true && pm2 start npm -- start && pm2 save"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
