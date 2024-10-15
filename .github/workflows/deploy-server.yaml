@@ -26,7 +26,7 @@ jobs:
 
     - name: Sync Server Folder to EC2
       run: |
-        scp -r /server/** ubuntu@3.84.93.148:/home/ubuntu/server
+        scp -r server/** ubuntu@3.84.93.148:/home/ubuntu/server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
