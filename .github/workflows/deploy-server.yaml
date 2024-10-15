@@ -13,7 +13,7 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
-        path: ./server
+        path: ./
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
@@ -27,7 +27,7 @@ jobs:
     - name: Sync Server Folder to EC2
       working-directory: ./server
       run: |
-        scp ./* ubuntu@3.84.93.148:/home/ubuntu
+        scp -r ./* ubuntu@3.84.93.148:/home/ubuntu
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
