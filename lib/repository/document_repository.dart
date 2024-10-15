@@ -25,7 +25,7 @@ class DocumentRepository {
     );
     try {
       var res = await _client.post(
-        Uri.parse('$host/doc/create'),
+        Uri.parse('${Env.host}/doc/create'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
@@ -64,7 +64,7 @@ class DocumentRepository {
     );
     try {
       var res = await _client.get(
-        Uri.parse('$host/docs/me'),
+        Uri.parse('${Env.host}/docs/me'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
@@ -105,7 +105,7 @@ class DocumentRepository {
     required String title,
   }) async {
     await _client.post(
-      Uri.parse('$host/doc/title'),
+      Uri.parse('${Env.host}/doc/title'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'x-auth-token': token,
@@ -124,7 +124,7 @@ class DocumentRepository {
     );
     try {
       var res = await _client.get(
-        Uri.parse('$host/doc/$id'),
+        Uri.parse('${Env.host}/doc/$id'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,

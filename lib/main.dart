@@ -5,8 +5,11 @@ import 'package:google_doc_clone/models/error_model.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:google_doc_clone/router.dart';
 import 'package:flutter_quill/translations.dart'; // Import localization.dart
+import 'constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Env.load();
   runApp(
     const ProviderScope(
       child: MyApp(),

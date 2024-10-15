@@ -7,12 +7,12 @@ class SocketClient {
 
   SocketClient._internal() {
     try {
-      socket = io.io(host, <String, dynamic>{
+      socket = io.io(Env.host, <String, dynamic>{
         'transports': ['websocket'],
         'autoConnect': true,
       });
       socket!.connect();
-      print('Socket connected to $host');
+      print('Socket connected to ${Env.host}');
     } catch (e) {
       print('Error connecting to socket: $e');
     }

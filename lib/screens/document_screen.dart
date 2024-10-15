@@ -17,7 +17,7 @@ import 'package:routemaster/routemaster.dart';
 import 'package:together_ai_sdk/together_ai_sdk.dart';
 import 'package:google_doc_clone/constants.dart';
 
-final togetherAI = TogetherAISdk(apiKey);
+final togetherAI = TogetherAISdk(Env.apiKey);
 
 class DocumentScreen extends ConsumerStatefulWidget {
   final String id;

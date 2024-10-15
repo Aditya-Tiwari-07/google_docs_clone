@@ -1,8 +1,15 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-Future<void> loadEnv() async {
-  await dotenv.load();
-}
+class Env {
+  static String? _host;
+  static String? _apiKey;
 
-final String host = dotenv.env['BACKEND_SERVER'] ?? '';
-final String apiKey = dotenv.env['TOGETHER_API_KEY'] ?? '';
+  static Future<void> load() async {
+    await dotenv.load();
+    _host = dotenv.env['BACKEND_SERVER'];
+    _apiKey = dotenv.env['TOGETHER_API_KEY'];
+  }
+
+  static String get host => _host ?? '';
+  static String get apiKey => _apiKey ?? '';
+}

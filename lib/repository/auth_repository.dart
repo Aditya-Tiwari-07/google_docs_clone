@@ -48,9 +48,11 @@ class AuthRepository {
         );
 
         print(userAcc.toJson());
+        print(Env.host);
+        print(Env.apiKey);
 
         var res = await _client.post(
-          Uri.parse('$host/api/signup'),
+          Uri.parse('${Env.host}/api/signup'),
           body: userAcc.toJson(),
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
@@ -60,6 +62,8 @@ class AuthRepository {
           throw Exception("Failed to sign up");
         });
 
+        print("Oh !: ${res.headers}");
+        print("Oh !: ${res.statusCode}");
         print("Oh !: ${res.body}");
 
         switch (res.statusCode) {
@@ -91,7 +95,7 @@ class AuthRepository {
       String? token = await _localStorageRepository.getToken();
 
       if (token != null) {
-        var res = await _client.get(Uri.parse('$host/'), headers: {
+        var res = await _client.get(Uri.parse('${Env.host}/'), headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': token,
         });
