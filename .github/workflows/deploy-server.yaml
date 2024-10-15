@@ -38,8 +38,8 @@ jobs:
         nvm use 20.18.0 &&
         cd /home/ubuntu/server && npm install && 
         export PATH=/home/ubuntu/.nvm/versions/node/v20.18.0/bin:$PATH &&
-        pm2 stop all || true && 
-        pm2 start npm -- start && 
-        pm2 save"
+        /home/ubuntu/.nvm/versions/node/v20.18.0/bin/pm2 stop all || true && 
+        /home/ubuntu/.nvm/versions/node/v20.18.0/bin/pm2 start npm -- start && 
+        /home/ubuntu/.nvm/versions/node/v20.18.0/bin/pm2 save"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
