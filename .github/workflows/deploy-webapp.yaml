@@ -9,11 +9,24 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      EC2_IP: 3.87.122.251
+      SSH_USER: ubuntu
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           path: ./
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+    
+      - name: Add EC2 Host to Known Hosts
+        run: |
+          ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -30,6 +43,6 @@ jobs:
         working-directory: ./build/web
         run: |
           scp -r ./* ubuntu@3.87.122.251:/var/www/html/
-          ssh ubuntu@3.87.122.251 'sudo systemctl restart nginx'
+          ssh $SSH_USER@$EC2_IP 'sudo systemctl restart nginx'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
