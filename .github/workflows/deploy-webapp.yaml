@@ -1,0 +1,35 @@
+name: Deploy Flutter Web to EC2
+
+on:
+  push:
+    branches:
+      - main # or your deployment branch
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: ./
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3' # Use your Flutter version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Flutter Web
+        run: flutter build web
+
+      - name: Deploy to EC2
+        working-directory: ./build/web
+        run: |
+          scp -r ./* ubuntu@3.87.122.251:/var/www/html/
+          ssh ubuntu@3.87.122.251 'sudo systemctl restart nginx'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
