@@ -9,6 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      EC2_IP: 3.87.122.251
+      SSH_USER: ubuntu
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -22,19 +26,19 @@ jobs:
     
     - name: Add EC2 Host to Known Hosts
       run: |
-        ssh-keyscan -H 3.84.93.148 >> ~/.ssh/known_hosts
+        ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
 
     - name: Sync Server Folder to EC2
       working-directory: ./server
       run: |
-        scp -r ./* ubuntu@3.84.93.148:/home/ubuntu/server
+        scp -r ./* $SSH_USER@$EC2_IP:/home/$SSH_USER/server
       env:
         SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
     - name: Restart Node Server with PM2
       run: |
-        ssh ubuntu@3.84.93.148 "
-        cd /home/ubuntu/server && npm install && 
+        ssh $SSH_USER@$EC2_IP "
+        cd /home/$SSH_USER/server && npm install && 
         pm2 stop all || true && 
         pm2 start npm -- start && 
         pm2 save"
