@@ -27,6 +27,8 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor:
+          kBlackColor, // Set background color to black for dark mode
       body: Center(
         child: ElevatedButton.icon(
           onPressed: () => signInWithGoogle(ref, context),
@@ -37,11 +39,13 @@ class LoginScreen extends ConsumerWidget {
           label: const Text(
             'Sign in with Google',
             style: TextStyle(
-              color: kBlackColor,
+              color:
+                  kWhiteColor, // Change text color to white for better contrast
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: kWhiteColor,
+            backgroundColor:
+                Colors.grey[800], // Use a dark grey for the button background
             minimumSize: const Size(150, 50),
           ),
         ),

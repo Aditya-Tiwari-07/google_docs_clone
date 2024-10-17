@@ -42,14 +42,14 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kWhiteColor,
+        backgroundColor: kBlackColor, // Changed to black for dark mode
         elevation: 0,
         actions: [
           IconButton(
             onPressed: () => createDocument(context, ref),
             icon: const Icon(
               Icons.add,
-              color: kBlackColor,
+              color: kWhiteColor, // Changed to white for better contrast
             ),
           ),
           IconButton(
@@ -61,45 +61,58 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: ref.watch(documentRepositoryProvider).getDocuments(
-              ref.watch(userProvider)!.token,
-            ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Loader();
-          }
+      body: Container(
+        color: Colors.grey[900], // Set background color to dark grey
+        child: FutureBuilder(
+          future: ref.watch(documentRepositoryProvider).getDocuments(
+                ref.watch(userProvider)!.token,
+              ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Loader();
+            }
 
-          print(snapshot.data!.data);
-          return Center(
-            child: Container(
-              width: 600,
-              margin: const EdgeInsets.only(top: 10),
-              child: ListView.builder(
-                itemCount: snapshot.data?.data?.length ?? 0,
-                itemBuilder: (context, index) {
-                  DocumentModel document = snapshot.data!.data[index];
-                  return InkWell(
-                    onTap: () => navigateToDocument(context, document.id),
-                    child: SizedBox(
-                      height: 50,
-                      child: Card(
-                        child: Center(
-                          child: Text(
-                            document.title,
-                            style: const TextStyle(
-                              fontSize: 17,
+            print(snapshot.data!.data);
+            return Center(
+              child: Container(
+                width: 600,
+                margin: const EdgeInsets.only(top: 10),
+                child: ListView.builder(
+                  itemCount: snapshot.data?.data?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    DocumentModel document = snapshot.data!.data[index];
+                    return InkWell(
+                      onTap: () => navigateToDocument(context, document.id),
+                      child: SizedBox(
+                        height: 50,
+                        child: Card(
+                          color: Colors.grey[850], // Dark card background
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: Colors.white,
+                                width: 1), // Thin white border
+                            borderRadius: BorderRadius.circular(
+                                4), // Optional: rounded corners
+                          ),
+                          child: Center(
+                            child: Text(
+                              document.title,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                color:
+                                    kWhiteColor, // Changed to white for better contrast
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
